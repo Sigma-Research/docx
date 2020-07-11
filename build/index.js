@@ -873,6 +873,7 @@ function __export(m) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(__webpack_require__(37));
+__export(__webpack_require__(11));
 __export(__webpack_require__(166));
 __export(__webpack_require__(167));
 __export(__webpack_require__(169));
@@ -2915,7 +2916,7 @@ var objectKeys = Object.keys || function (obj) {
 module.exports = Duplex;
 
 /*<replacement>*/
-var util = __webpack_require__(15);
+var util = __webpack_require__(16);
 util.inherits = __webpack_require__(10);
 /*</replacement>*/
 
@@ -3041,6 +3042,117 @@ if (typeof Object.create === 'function') {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+const xml_components_1 = __webpack_require__(0);
+const emphasis_mark_1 = __webpack_require__(39);
+const formatting_1 = __webpack_require__(74);
+const run_fonts_1 = __webpack_require__(22);
+const script_1 = __webpack_require__(75);
+const style_1 = __webpack_require__(76);
+const underline_1 = __webpack_require__(21);
+class RunProperties extends xml_components_1.IgnoreIfEmptyXmlComponent {
+    constructor(options) {
+        super("w:rPr");
+        if (!options) {
+            return;
+        }
+        if (options.bold) {
+            this.push(new formatting_1.Bold());
+        }
+        if ((options.boldComplexScript === undefined && options.bold) || options.boldComplexScript) {
+            this.push(new formatting_1.BoldComplexScript());
+        }
+        if (options.italics) {
+            this.push(new formatting_1.Italics());
+        }
+        if ((options.italicsComplexScript === undefined && options.italics) || options.italicsComplexScript) {
+            this.push(new formatting_1.ItalicsComplexScript());
+        }
+        if (options.underline) {
+            this.push(new underline_1.Underline(options.underline.type, options.underline.color));
+        }
+        if (options.emphasisMark) {
+            this.push(new emphasis_mark_1.EmphasisMark(options.emphasisMark.type));
+        }
+        if (options.color) {
+            this.push(new formatting_1.Color(options.color));
+        }
+        if (options.size) {
+            this.push(new formatting_1.Size(options.size));
+        }
+        const szCs = options.sizeComplexScript === undefined || options.sizeComplexScript === true ? options.size : options.sizeComplexScript;
+        if (szCs) {
+            this.push(new formatting_1.SizeComplexScript(szCs));
+        }
+        if (options.rightToLeft) {
+            this.push(new formatting_1.RightToLeft());
+        }
+        if (options.smallCaps) {
+            this.push(new formatting_1.SmallCaps());
+        }
+        if (options.allCaps) {
+            this.push(new formatting_1.Caps());
+        }
+        if (options.strike) {
+            this.push(new formatting_1.Strike());
+        }
+        if (options.doubleStrike) {
+            this.push(new formatting_1.DoubleStrike());
+        }
+        if (options.subScript) {
+            this.push(new script_1.SubScript());
+        }
+        if (options.superScript) {
+            this.push(new script_1.SuperScript());
+        }
+        if (options.style) {
+            this.push(new style_1.Style(options.style));
+        }
+        if (options.font) {
+            if (typeof options.font === "string") {
+                this.push(new run_fonts_1.RunFonts(options.font));
+            }
+            else if ("name" in options.font) {
+                this.push(new run_fonts_1.RunFonts(options.font.name, options.font.hint));
+            }
+            else {
+                this.push(new run_fonts_1.RunFonts(options.font));
+            }
+        }
+        if (options.highlight) {
+            this.push(new formatting_1.Highlight(options.highlight));
+        }
+        const highlightCs = options.highlightComplexScript === undefined || options.highlightComplexScript === true
+            ? options.highlight
+            : options.highlightComplexScript;
+        if (highlightCs) {
+            this.push(new formatting_1.HighlightComplexScript(highlightCs));
+        }
+        if (options.characterSpacing) {
+            this.push(new formatting_1.CharacterSpacing(options.characterSpacing));
+        }
+        const shading = options.shading || options.shadow;
+        if (shading) {
+            this.push(new formatting_1.Shading(shading.type, shading.fill, shading.color));
+        }
+        const shdCs = options.shadingComplexScript === undefined || options.shadingComplexScript === true ? shading : options.shadingComplexScript;
+        if (shdCs) {
+            this.push(new formatting_1.ShadowComplexScript(shdCs.type, shdCs.fill, shdCs.color));
+        }
+    }
+    push(item) {
+        this.root.push(item);
+    }
+}
+exports.RunProperties = RunProperties;
+
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
@@ -3050,7 +3162,7 @@ __export(__webpack_require__(43));
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3091,7 +3203,7 @@ exports.DocumentAttributes = DocumentAttributes;
 
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3373,7 +3485,7 @@ exports.Utf8EncodeWorker = Utf8EncodeWorker;
 
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -3563,7 +3675,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {// Copyright Joyent, Inc. and other Node contributors.
@@ -3677,117 +3789,6 @@ function objectToString(o) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5).Buffer))
 
 /***/ }),
-/* 16 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-const xml_components_1 = __webpack_require__(0);
-const emphasis_mark_1 = __webpack_require__(39);
-const formatting_1 = __webpack_require__(74);
-const run_fonts_1 = __webpack_require__(22);
-const script_1 = __webpack_require__(75);
-const style_1 = __webpack_require__(76);
-const underline_1 = __webpack_require__(21);
-class RunProperties extends xml_components_1.IgnoreIfEmptyXmlComponent {
-    constructor(options) {
-        super("w:rPr");
-        if (!options) {
-            return;
-        }
-        if (options.bold) {
-            this.push(new formatting_1.Bold());
-        }
-        if ((options.boldComplexScript === undefined && options.bold) || options.boldComplexScript) {
-            this.push(new formatting_1.BoldComplexScript());
-        }
-        if (options.italics) {
-            this.push(new formatting_1.Italics());
-        }
-        if ((options.italicsComplexScript === undefined && options.italics) || options.italicsComplexScript) {
-            this.push(new formatting_1.ItalicsComplexScript());
-        }
-        if (options.underline) {
-            this.push(new underline_1.Underline(options.underline.type, options.underline.color));
-        }
-        if (options.emphasisMark) {
-            this.push(new emphasis_mark_1.EmphasisMark(options.emphasisMark.type));
-        }
-        if (options.color) {
-            this.push(new formatting_1.Color(options.color));
-        }
-        if (options.size) {
-            this.push(new formatting_1.Size(options.size));
-        }
-        const szCs = options.sizeComplexScript === undefined || options.sizeComplexScript === true ? options.size : options.sizeComplexScript;
-        if (szCs) {
-            this.push(new formatting_1.SizeComplexScript(szCs));
-        }
-        if (options.rightToLeft) {
-            this.push(new formatting_1.RightToLeft());
-        }
-        if (options.smallCaps) {
-            this.push(new formatting_1.SmallCaps());
-        }
-        if (options.allCaps) {
-            this.push(new formatting_1.Caps());
-        }
-        if (options.strike) {
-            this.push(new formatting_1.Strike());
-        }
-        if (options.doubleStrike) {
-            this.push(new formatting_1.DoubleStrike());
-        }
-        if (options.subScript) {
-            this.push(new script_1.SubScript());
-        }
-        if (options.superScript) {
-            this.push(new script_1.SuperScript());
-        }
-        if (options.style) {
-            this.push(new style_1.Style(options.style));
-        }
-        if (options.font) {
-            if (typeof options.font === "string") {
-                this.push(new run_fonts_1.RunFonts(options.font));
-            }
-            else if ("name" in options.font) {
-                this.push(new run_fonts_1.RunFonts(options.font.name, options.font.hint));
-            }
-            else {
-                this.push(new run_fonts_1.RunFonts(options.font));
-            }
-        }
-        if (options.highlight) {
-            this.push(new formatting_1.Highlight(options.highlight));
-        }
-        const highlightCs = options.highlightComplexScript === undefined || options.highlightComplexScript === true
-            ? options.highlight
-            : options.highlightComplexScript;
-        if (highlightCs) {
-            this.push(new formatting_1.HighlightComplexScript(highlightCs));
-        }
-        if (options.characterSpacing) {
-            this.push(new formatting_1.CharacterSpacing(options.characterSpacing));
-        }
-        const shading = options.shading || options.shadow;
-        if (shading) {
-            this.push(new formatting_1.Shading(shading.type, shading.fill, shading.color));
-        }
-        const shdCs = options.shadingComplexScript === undefined || options.shadingComplexScript === true ? shading : options.shadingComplexScript;
-        if (shdCs) {
-            this.push(new formatting_1.ShadowComplexScript(shdCs.type, shdCs.fill, shdCs.color));
-        }
-    }
-    push(item) {
-        this.root.push(item);
-    }
-}
-exports.RunProperties = RunProperties;
-
-
-/***/ }),
 /* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3864,7 +3865,7 @@ function nextTick(fn, arg1, arg2, arg3) {
 }
 
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(15)))
 
 /***/ }),
 /* 19 */
@@ -5152,7 +5153,7 @@ var Duplex;
 Writable.WritableState = WritableState;
 
 /*<replacement>*/
-var util = __webpack_require__(15);
+var util = __webpack_require__(16);
 util.inherits = __webpack_require__(10);
 /*</replacement>*/
 
@@ -5773,7 +5774,7 @@ Writable.prototype._destroy = function (err, cb) {
   this.end();
   cb(err);
 };
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14), __webpack_require__(67).setImmediate, __webpack_require__(8)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(15), __webpack_require__(67).setImmediate, __webpack_require__(8)))
 
 /***/ }),
 /* 34 */
@@ -6154,7 +6155,7 @@ const xml_components_1 = __webpack_require__(0);
 const break_1 = __webpack_require__(164);
 const field_1 = __webpack_require__(38);
 const page_number_1 = __webpack_require__(165);
-const properties_1 = __webpack_require__(16);
+const properties_1 = __webpack_require__(11);
 const text_1 = __webpack_require__(77);
 var PageNumber;
 (function (PageNumber) {
@@ -6664,7 +6665,7 @@ exports.SemiHidden = SemiHidden;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 const paragraph_1 = __webpack_require__(2);
-const properties_1 = __webpack_require__(16);
+const properties_1 = __webpack_require__(11);
 const components_1 = __webpack_require__(46);
 const style_1 = __webpack_require__(45);
 class ParagraphStyle extends style_1.Style {
@@ -6725,7 +6726,7 @@ exports.ParagraphStyle = ParagraphStyle;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const properties_1 = __webpack_require__(16);
+const properties_1 = __webpack_require__(11);
 const components_1 = __webpack_require__(46);
 const style_1 = __webpack_require__(45);
 class CharacterStyle extends style_1.Style {
@@ -6926,7 +6927,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const xml_components_1 = __webpack_require__(0);
 const formatting_1 = __webpack_require__(59);
 const properties_1 = __webpack_require__(24);
-const properties_2 = __webpack_require__(16);
+const properties_2 = __webpack_require__(11);
 class LevelAttributes extends xml_components_1.XmlAttributeComponent {
     constructor() {
         super(...arguments);
@@ -7781,7 +7782,7 @@ function _isUint8Array(obj) {
 /*</replacement>*/
 
 /*<replacement>*/
-var util = __webpack_require__(15);
+var util = __webpack_require__(16);
 util.inherits = __webpack_require__(10);
 /*</replacement>*/
 
@@ -8734,7 +8735,7 @@ function indexOf(xs, x) {
   }
   return -1;
 }
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8), __webpack_require__(14)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8), __webpack_require__(15)))
 
 /***/ }),
 /* 65 */
@@ -8968,7 +8969,7 @@ module.exports = Transform;
 var Duplex = __webpack_require__(9);
 
 /*<replacement>*/
-var util = __webpack_require__(15);
+var util = __webpack_require__(16);
 util.inherits = __webpack_require__(10);
 /*</replacement>*/
 
@@ -10544,7 +10545,7 @@ function __export(m) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(__webpack_require__(264));
-__export(__webpack_require__(12));
+__export(__webpack_require__(13));
 __export(__webpack_require__(102));
 
 
@@ -14724,7 +14725,7 @@ if (util && util.inspect && util.inspect.custom) {
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8), __webpack_require__(14)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8), __webpack_require__(15)))
 
 /***/ }),
 /* 153 */
@@ -14837,7 +14838,7 @@ module.exports = PassThrough;
 var Transform = __webpack_require__(68);
 
 /*<replacement>*/
-var util = __webpack_require__(15);
+var util = __webpack_require__(16);
 util.inherits = __webpack_require__(10);
 /*</replacement>*/
 
@@ -16848,7 +16849,7 @@ function __export(m) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(__webpack_require__(236));
-__export(__webpack_require__(11));
+__export(__webpack_require__(12));
 __export(__webpack_require__(93));
 __export(__webpack_require__(44));
 __export(__webpack_require__(250));
@@ -16863,7 +16864,7 @@ __export(__webpack_require__(250));
 Object.defineProperty(exports, "__esModule", { value: true });
 const xml_components_1 = __webpack_require__(0);
 const grid_1 = __webpack_require__(237);
-const table_cell_1 = __webpack_require__(11);
+const table_cell_1 = __webpack_require__(12);
 const table_properties_1 = __webpack_require__(93);
 class Table extends xml_components_1.XmlComponent {
     constructor({ rows, width, columnWidths = Array(Math.max(...rows.map((row) => row.CellCount))).fill(100), margins: { marginUnitType, top, bottom, right, left } = { marginUnitType: table_cell_1.WidthType.AUTO, top: 0, bottom: 0, right: 0, left: 0 }, float, layout, borders, alignment, }) {
@@ -17232,7 +17233,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const xml_components_1 = __webpack_require__(0);
 const paragraph_1 = __webpack_require__(2);
 const shading_1 = __webpack_require__(44);
-const table_cell_1 = __webpack_require__(11);
+const table_cell_1 = __webpack_require__(12);
 const table_borders_1 = __webpack_require__(94);
 const table_cell_margin_1 = __webpack_require__(248);
 const table_float_properties_1 = __webpack_require__(96);
@@ -17479,7 +17480,7 @@ var BorderStyle;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 const xml_components_1 = __webpack_require__(0);
-const table_cell_1 = __webpack_require__(11);
+const table_cell_1 = __webpack_require__(12);
 class TableCellMarginAttributes extends xml_components_1.XmlAttributeComponent {
     constructor() {
         super(...arguments);
@@ -17530,7 +17531,7 @@ exports.TableCellMargin = TableCellMargin;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 const xml_components_1 = __webpack_require__(0);
-const table_cell_1 = __webpack_require__(11);
+const table_cell_1 = __webpack_require__(12);
 class TableWidthAttributes extends xml_components_1.XmlAttributeComponent {
     constructor() {
         super(...arguments);
@@ -17570,7 +17571,7 @@ __export(__webpack_require__(100));
 
 Object.defineProperty(exports, "__esModule", { value: true });
 const xml_components_1 = __webpack_require__(0);
-const table_cell_1 = __webpack_require__(11);
+const table_cell_1 = __webpack_require__(12);
 const table_row_properties_1 = __webpack_require__(99);
 class TableRow extends xml_components_1.XmlComponent {
     constructor(options) {
@@ -18077,7 +18078,7 @@ __export(__webpack_require__(262));
 
 Object.defineProperty(exports, "__esModule", { value: true });
 const xml_components_1 = __webpack_require__(0);
-const document_attributes_1 = __webpack_require__(12);
+const document_attributes_1 = __webpack_require__(13);
 const components_1 = __webpack_require__(263);
 class CoreProperties extends xml_components_1.XmlComponent {
     constructor(options) {
@@ -18125,7 +18126,7 @@ exports.CoreProperties = CoreProperties;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 const xml_components_1 = __webpack_require__(0);
-const document_attributes_1 = __webpack_require__(12);
+const document_attributes_1 = __webpack_require__(13);
 class Title extends xml_components_1.XmlComponent {
     constructor(value) {
         super("dc:title");
@@ -18219,7 +18220,7 @@ exports.Modified = Modified;
 Object.defineProperty(exports, "__esModule", { value: true });
 const xml_components_1 = __webpack_require__(0);
 const body_1 = __webpack_require__(102);
-const document_attributes_1 = __webpack_require__(12);
+const document_attributes_1 = __webpack_require__(13);
 class Document extends xml_components_1.XmlComponent {
     constructor() {
         super("w:document");
@@ -19367,7 +19368,7 @@ exports.WORKAROUND2 = "";
 Object.defineProperty(exports, "__esModule", { value: true });
 const paragraph_1 = __webpack_require__(2);
 const xml_components_1 = __webpack_require__(0);
-const document_attributes_1 = __webpack_require__(12);
+const document_attributes_1 = __webpack_require__(13);
 const abstract_numbering_1 = __webpack_require__(120);
 const num_1 = __webpack_require__(121);
 class Numbering extends xml_components_1.XmlComponent {
@@ -19696,7 +19697,7 @@ exports.ExternalStylesFactory = ExternalStylesFactory;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const document_attributes_1 = __webpack_require__(12);
+const document_attributes_1 = __webpack_require__(13);
 const defaults_1 = __webpack_require__(308);
 const style_1 = __webpack_require__(95);
 class DefaultStylesFactory {
@@ -19812,7 +19813,7 @@ exports.ParagraphPropertiesDefaults = ParagraphPropertiesDefaults;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 const formatting_1 = __webpack_require__(74);
-const properties_1 = __webpack_require__(16);
+const properties_1 = __webpack_require__(11);
 const run_fonts_1 = __webpack_require__(22);
 const xml_components_1 = __webpack_require__(0);
 class RunPropertiesDefaults extends xml_components_1.XmlComponent {
@@ -20269,7 +20270,7 @@ exports.Compiler = Compiler;
 
 "use strict";
 
-var utf8 = __webpack_require__(13);
+var utf8 = __webpack_require__(14);
 var utils = __webpack_require__(1);
 var GenericWorker = __webpack_require__(3);
 var StreamHelper = __webpack_require__(126);
@@ -21122,7 +21123,7 @@ module.exports = NodejsStreamOutputAdapter;
 
 var StreamHelper = __webpack_require__(126);
 var DataWorker = __webpack_require__(128);
-var utf8 = __webpack_require__(13);
+var utf8 = __webpack_require__(14);
 var CompressedObject = __webpack_require__(56);
 var GenericWorker = __webpack_require__(3);
 
@@ -27716,7 +27717,7 @@ module.exports = GZheader;
 
 var utils = __webpack_require__(1);
 var GenericWorker = __webpack_require__(3);
-var utf8 = __webpack_require__(13);
+var utf8 = __webpack_require__(14);
 var crc32 = __webpack_require__(57);
 var signature = __webpack_require__(137);
 
@@ -28343,7 +28344,7 @@ module.exports = NodejsStreamInputAdapter;
 
 var utils = __webpack_require__(1);
 var external = __webpack_require__(17);
-var utf8 = __webpack_require__(13);
+var utf8 = __webpack_require__(14);
 var utils = __webpack_require__(1);
 var ZipEntries = __webpack_require__(343);
 var Crc32Probe = __webpack_require__(130);
@@ -28434,7 +28435,7 @@ var readerFor = __webpack_require__(138);
 var utils = __webpack_require__(1);
 var sig = __webpack_require__(137);
 var ZipEntry = __webpack_require__(346);
-var utf8 = __webpack_require__(13);
+var utf8 = __webpack_require__(14);
 var support = __webpack_require__(6);
 //  class ZipEntries {{{
 /**
@@ -28774,7 +28775,7 @@ var readerFor = __webpack_require__(138);
 var utils = __webpack_require__(1);
 var CompressedObject = __webpack_require__(56);
 var crc32fn = __webpack_require__(57);
-var utf8 = __webpack_require__(13);
+var utf8 = __webpack_require__(14);
 var compressions = __webpack_require__(131);
 var support = __webpack_require__(6);
 
@@ -29350,7 +29351,7 @@ function attribute(key, value) {
 module.exports = xml;
 module.exports.element = module.exports.Element = element;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(15)))
 
 /***/ }),
 /* 348 */
