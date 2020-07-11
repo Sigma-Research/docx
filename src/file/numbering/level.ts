@@ -1,8 +1,7 @@
 import { Attributes, XmlAttributeComponent, XmlComponent } from "file/xml-components";
 import { AlignmentType } from "../paragraph/formatting";
-import { ParagraphProperties } from "../paragraph/properties";
-import { RunProperties } from "../paragraph/run/properties";
-import { IParagraphStyleOptions2, IRunStyleOptions } from "../styles/style-options";
+import { IParagraphPropertiesOptions, ParagraphProperties } from "../paragraph/properties";
+import { IRunPropertiesOptions, RunProperties } from "../paragraph/run/properties";
 
 interface ILevelAttributesProperties {
     readonly ilvl?: number;
@@ -74,8 +73,8 @@ export interface ILevelsOptions {
     readonly start?: number;
     readonly suffix?: LevelSuffix;
     readonly style?: {
-        readonly run?: IRunStyleOptions;
-        readonly paragraph?: IParagraphStyleOptions2;
+        readonly run?: IRunPropertiesOptions;
+        readonly paragraph?: IParagraphPropertiesOptions;
     };
 }
 
@@ -115,7 +114,28 @@ export class LevelBase extends XmlComponent {
         }
 
         this.paragraphProperties = new ParagraphProperties(style && style.paragraph);
-        this.runProperties = new RunProperties(style && style.run);
+        if (style && style.run) {
+            type Mutable<T> = { -readonly [P in keyof T]: T[P] };
+            const runOptions: Mutable<typeof style.run> = { ...style.run };
+            if (runOptions.bold && runOptions.boldComplexScript === undefined) {
+                runOptions.boldComplexScript = false;
+            }
+            if (runOptions.italics && runOptions.italicsComplexScript === undefined) {
+                runOptions.italicsComplexScript = false;
+            }
+            if (runOptions.size && runOptions.sizeComplexScript === undefined) {
+                runOptions.sizeComplexScript = false;
+            }
+            if (runOptions.highlight && runOptions.highlightComplexScript === undefined) {
+                runOptions.highlightComplexScript = false;
+            }
+            if ((runOptions.shading || runOptions.shadow) && runOptions.shadingComplexScript === undefined) {
+                runOptions.shadingComplexScript = false;
+            }
+            this.runProperties = new RunProperties(runOptions);
+        } else {
+            this.runProperties = new RunProperties();
+        }
 
         this.root.push(this.paragraphProperties);
         this.root.push(this.runProperties);

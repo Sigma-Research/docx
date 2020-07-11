@@ -1,10 +1,10 @@
 import { ShadingType } from "file/table";
 import { IgnoreIfEmptyXmlComponent, XmlComponent } from "file/xml-components";
-import { Caps, SmallCaps } from "./caps";
 import { EmphasisMark, EmphasisMarkType } from "./emphasis-mark";
 import {
     Bold,
     BoldComplexScript,
+    Caps,
     CharacterSpacing,
     Color,
     DoubleStrike,
@@ -17,6 +17,7 @@ import {
     ShadowComplexScript,
     Size,
     SizeComplexScript,
+    SmallCaps,
     Strike,
 } from "./formatting";
 import { IFontAttributesProperties, RunFonts } from "./run-fonts";
@@ -31,7 +32,9 @@ interface IFontOptions {
 
 export interface IRunPropertiesOptions {
     readonly bold?: boolean;
+    readonly boldComplexScript?: boolean;
     readonly italics?: boolean;
+    readonly italicsComplexScript?: boolean;
     readonly underline?: {
         readonly color?: string;
         readonly type?: UnderlineType;
@@ -41,6 +44,7 @@ export interface IRunPropertiesOptions {
     };
     readonly color?: string;
     readonly size?: number;
+    readonly sizeComplexScript?: boolean | number;
     readonly rightToLeft?: boolean;
     readonly smallCaps?: boolean;
     readonly allCaps?: boolean;
@@ -51,17 +55,15 @@ export interface IRunPropertiesOptions {
     readonly style?: string;
     readonly font?: string | IFontOptions | IFontAttributesProperties;
     readonly highlight?: string;
+    readonly highlightComplexScript?: boolean | string;
     readonly characterSpacing?: number;
     readonly shading?: {
         readonly type: ShadingType;
         readonly fill: string;
         readonly color: string;
     };
-    readonly shadow?: {
-        readonly type: ShadingType;
-        readonly fill: string;
-        readonly color: string;
-    };
+    readonly shadingComplexScript?: boolean | IRunPropertiesOptions["shading"];
+    readonly shadow?: IRunPropertiesOptions["shading"];
 }
 
 export class RunProperties extends IgnoreIfEmptyXmlComponent {
@@ -74,11 +76,15 @@ export class RunProperties extends IgnoreIfEmptyXmlComponent {
 
         if (options.bold) {
             this.push(new Bold());
+        }
+        if ((options.boldComplexScript === undefined && options.bold) || options.boldComplexScript) {
             this.push(new BoldComplexScript());
         }
 
         if (options.italics) {
             this.push(new Italics());
+        }
+        if ((options.italicsComplexScript === undefined && options.italics) || options.italicsComplexScript) {
             this.push(new ItalicsComplexScript());
         }
 
@@ -96,7 +102,11 @@ export class RunProperties extends IgnoreIfEmptyXmlComponent {
 
         if (options.size) {
             this.push(new Size(options.size));
-            this.push(new SizeComplexScript(options.size));
+        }
+        const szCs =
+            options.sizeComplexScript === undefined || options.sizeComplexScript === true ? options.size : options.sizeComplexScript;
+        if (szCs) {
+            this.push(new SizeComplexScript(szCs));
         }
 
         if (options.rightToLeft) {
@@ -143,19 +153,27 @@ export class RunProperties extends IgnoreIfEmptyXmlComponent {
 
         if (options.highlight) {
             this.push(new Highlight(options.highlight));
-            this.push(new HighlightComplexScript(options.highlight));
+        }
+        const highlightCs =
+            options.highlightComplexScript === undefined || options.highlightComplexScript === true
+                ? options.highlight
+                : options.highlightComplexScript;
+        if (highlightCs) {
+            this.push(new HighlightComplexScript(highlightCs));
         }
 
         if (options.characterSpacing) {
             this.push(new CharacterSpacing(options.characterSpacing));
         }
 
-        if (options.shading) {
-            this.push(new Shading(options.shading.type, options.shading.fill, options.shading.color));
-            this.push(new ShadowComplexScript(options.shading.type, options.shading.fill, options.shading.color));
-        } else if (options.shadow) {
-            this.push(new Shading(options.shadow.type, options.shadow.fill, options.shadow.color));
-            this.push(new ShadowComplexScript(options.shadow.type, options.shadow.fill, options.shadow.color));
+        const shading = options.shading || options.shadow;
+        if (shading) {
+            this.push(new Shading(shading.type, shading.fill, shading.color));
+        }
+        const shdCs =
+            options.shadingComplexScript === undefined || options.shadingComplexScript === true ? shading : options.shadingComplexScript;
+        if (shdCs) {
+            this.push(new ShadowComplexScript(shdCs.type, shdCs.fill, shdCs.color));
         }
     }
 

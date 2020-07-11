@@ -1,8 +1,4 @@
-import { EmphasisMarkType } from "file/paragraph/run/emphasis-mark";
-import { RunProperties } from "file/paragraph/run/properties";
-import { IFontAttributesProperties } from "file/paragraph/run/run-fonts";
-import { UnderlineType } from "file/paragraph/run/underline";
-import { ShadingType } from "file/table";
+import { IRunPropertiesOptions, RunProperties } from "file/paragraph/run/properties";
 
 import { BasedOn, Link, SemiHidden, UiPriority, UnhideWhenUsed } from "./components";
 import { Style } from "./style";
@@ -11,33 +7,7 @@ export interface IBaseCharacterStyleOptions {
     readonly basedOn?: string;
     readonly link?: string;
     readonly semiHidden?: boolean;
-    readonly run?: {
-        readonly size?: number;
-        readonly bold?: boolean;
-        readonly italics?: boolean;
-        readonly smallCaps?: boolean;
-        readonly allCaps?: boolean;
-        readonly strike?: boolean;
-        readonly doubleStrike?: boolean;
-        readonly subScript?: boolean;
-        readonly superScript?: boolean;
-        readonly underline?: {
-            readonly type?: UnderlineType;
-            readonly color?: string;
-        };
-        readonly emphasisMark?: {
-            readonly type?: EmphasisMarkType;
-        };
-        readonly color?: string;
-        readonly font?: string | IFontAttributesProperties;
-        readonly characterSpacing?: number;
-        readonly highlight?: string;
-        readonly shadow?: {
-            readonly type: ShadingType;
-            readonly fill: string;
-            readonly color: string;
-        };
-    };
+    readonly run?: IRunPropertiesOptions;
 }
 
 export interface ICharacterStyleOptions extends IBaseCharacterStyleOptions {
@@ -50,7 +20,25 @@ export class CharacterStyle extends Style {
 
     constructor(options: ICharacterStyleOptions) {
         super({ type: "character", styleId: options.id }, options.name);
-        this.runProperties = new RunProperties(options.run);
+        if (options.run) {
+            type Mutable<T> = { -readonly [P in keyof T]: T[P] };
+            const runOptions: Mutable<typeof options.run> = { ...options.run };
+            if (runOptions.bold && runOptions.boldComplexScript === undefined) {
+                runOptions.boldComplexScript = false;
+            }
+            if (runOptions.italics && runOptions.italicsComplexScript === undefined) {
+                runOptions.italicsComplexScript = false;
+            }
+            if (runOptions.highlight && runOptions.highlightComplexScript === undefined) {
+                runOptions.highlightComplexScript = false;
+            }
+            if ((runOptions.shading || runOptions.shadow) && runOptions.shadingComplexScript === undefined) {
+                runOptions.shadingComplexScript = false;
+            }
+            this.runProperties = new RunProperties(runOptions);
+        } else {
+            this.runProperties = new RunProperties();
+        }
         this.root.push(this.runProperties);
         this.root.push(new UiPriority(99));
         this.root.push(new UnhideWhenUsed());
