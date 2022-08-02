@@ -11,15 +11,4 @@ export class RunPropertiesDefaults extends XmlComponent {
         this.properties = new RunProperties(options);
         this.root.push(this.properties);
     }
-
-    public size(size: number): RunPropertiesDefaults {
-        this.properties.push(new Size(size));
-        this.properties.push(new SizeComplexScript(size));
-        return this;
-    }
-
-    public font(font: string | IFontAttributesProperties): RunPropertiesDefaults {
-        this.properties.push(new RunFonts(font));
-        return this;
-    }
 }
