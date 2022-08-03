@@ -13,10 +13,11 @@ export class Media {
         width?: number,
         height?: number,
         drawingOptions?: IDrawingOptions,
+        title?: string,
     ): PictureRun {
         // Workaround to expose id without exposing to API
         const mediaData = file.Media.addMedia(buffer, width, height);
-        return new PictureRun(mediaData, drawingOptions);
+        return new PictureRun(mediaData, drawingOptions, title);
     }
 
     private static generateId(): string {

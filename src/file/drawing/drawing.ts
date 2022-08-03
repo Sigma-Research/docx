@@ -18,11 +18,11 @@ export interface IDrawingOptions {
 export class Drawing extends XmlComponent {
     private readonly inline: Inline;
 
-    constructor(imageData: IMediaData, drawingOptions: IDrawingOptions = {}) {
+    constructor(imageData: IMediaData, drawingOptions: IDrawingOptions = {}, title?: string) {
         super("w:drawing");
 
         if (!drawingOptions.floating) {
-            this.inline = new Inline(imageData, imageData.dimensions);
+            this.inline = new Inline(imageData, imageData.dimensions, title);
             this.root.push(this.inline);
         } else {
             this.root.push(new Anchor(imageData, imageData.dimensions, drawingOptions));

@@ -12,7 +12,7 @@ export class Inline extends XmlComponent {
     private readonly extent: Extent;
     private readonly graphic: Graphic;
 
-    constructor(readonly mediaData: IMediaData, private readonly dimensions: IMediaDataDimensions) {
+    constructor(readonly mediaData: IMediaData, private readonly dimensions: IMediaDataDimensions, title?: string) {
         super("wp:inline");
 
         this.root.push(
@@ -25,11 +25,11 @@ export class Inline extends XmlComponent {
         );
 
         this.extent = new Extent(dimensions.emus.x, dimensions.emus.y);
-        this.graphic = new Graphic(mediaData, dimensions.emus.x, dimensions.emus.y);
+        this.graphic = new Graphic(mediaData, dimensions.emus.x, dimensions.emus.y, title);
 
         this.root.push(this.extent);
         this.root.push(new EffectExtent());
-        this.root.push(new DocProperties());
+        this.root.push(new DocProperties(title));
         this.root.push(new GraphicFrameProperties());
         this.root.push(this.graphic);
     }

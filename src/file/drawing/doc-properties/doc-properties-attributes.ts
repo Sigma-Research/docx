@@ -4,6 +4,7 @@ export interface IDocPropertiesAttributes {
     readonly id?: number;
     readonly name?: string;
     readonly descr?: string;
+    readonly title?: string;
 }
 
 export class DocPropertiesAttributes extends XmlAttributeComponent<IDocPropertiesAttributes> {
@@ -11,5 +12,6 @@ export class DocPropertiesAttributes extends XmlAttributeComponent<IDocPropertie
         id: "id",
         name: "name",
         descr: "descr",
+        title: "title",
     };
 }

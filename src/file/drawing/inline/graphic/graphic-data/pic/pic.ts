@@ -10,7 +10,7 @@ import { ShapeProperties } from "./shape-properties/shape-properties";
 export class Pic extends XmlComponent {
     private readonly shapeProperties: ShapeProperties;
 
-    constructor(mediaData: IMediaData, x: number, y: number) {
+    constructor(mediaData: IMediaData, x: number, y: number, title?: string) {
         super("pic:pic");
 
         this.root.push(
@@ -21,7 +21,7 @@ export class Pic extends XmlComponent {
 
         this.shapeProperties = new ShapeProperties(x, y);
 
-        this.root.push(new NonVisualPicProperties());
+        this.root.push(new NonVisualPicProperties(title));
         this.root.push(new BlipFill(mediaData));
         this.root.push(new ShapeProperties(x, y));
     }

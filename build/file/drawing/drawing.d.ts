@@ -12,6 +12,6 @@ export interface IDrawingOptions {
 }
 export declare class Drawing extends XmlComponent {
     private readonly inline;
-    constructor(imageData: IMediaData, drawingOptions?: IDrawingOptions);
+    constructor(imageData: IMediaData, drawingOptions?: IDrawingOptions, title?: string);
     scale(factorX: number, factorY: number): void;
 }

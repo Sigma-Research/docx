@@ -5,6 +5,6 @@ export declare class Inline extends XmlComponent {
     private readonly dimensions;
     private readonly extent;
     private readonly graphic;
-    constructor(mediaData: IMediaData, dimensions: IMediaDataDimensions);
+    constructor(mediaData: IMediaData, dimensions: IMediaDataDimensions, title?: string);
     scale(factorX: number, factorY: number): void;
 }

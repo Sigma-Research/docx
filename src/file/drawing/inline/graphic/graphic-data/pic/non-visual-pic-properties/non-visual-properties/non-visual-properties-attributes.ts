@@ -4,6 +4,7 @@ export interface INonVisualPropertiesAttributes {
     readonly id?: number;
     readonly name?: string;
     readonly descr?: string;
+    readonly title?: string;
 }
 
 export class NonVisualPropertiesAttributes extends XmlAttributeComponent<INonVisualPropertiesAttributes> {
@@ -11,5 +12,6 @@ export class NonVisualPropertiesAttributes extends XmlAttributeComponent<INonVis
         id: "id",
         name: "name",
         descr: "desc",
+        title: "title",
     };
 }

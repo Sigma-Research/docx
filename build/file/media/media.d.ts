@@ -5,7 +5,7 @@ import { HeaderWrapper } from "../header-wrapper";
 import { PictureRun } from "../paragraph";
 import { IMediaData } from "./data";
 export declare class Media {
-    static addImage(file: File | HeaderWrapper | FooterWrapper, buffer: Buffer | string | Uint8Array | ArrayBuffer, width?: number, height?: number, drawingOptions?: IDrawingOptions): PictureRun;
+    static addImage(file: File | HeaderWrapper | FooterWrapper, buffer: Buffer | string | Uint8Array | ArrayBuffer, width?: number, height?: number, drawingOptions?: IDrawingOptions, title?: string): PictureRun;
     private static generateId;
     private readonly map;
     constructor();
