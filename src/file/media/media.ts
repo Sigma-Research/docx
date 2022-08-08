@@ -19,7 +19,7 @@ export class Media {
         this.map = new Map<string, IMediaData>();
     }
 
-    public addMedia(data: Buffer | string | Uint8Array | ArrayBuffer, transformation: IMediaTransformation): IMediaData {
+    public addMedia(data: Buffer | string | Uint8Array | ArrayBuffer, transformation: IMediaTransformation, title?: string,): IMediaData {
         const key = `${uniqueId()}.png`;
 
         const newData = typeof data === "string" ? this.convertDataURIToBinary(data) : data;

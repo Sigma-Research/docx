@@ -40,7 +40,9 @@ export class TableWidthElement extends XmlComponent {
         // super("w:tblW");
         let tableWidthValue = size;
         if (type === WidthType.PERCENTAGE && typeof size === "number") {
-            tableWidthValue = `${size}%`;
+            // 为了兼容 wps ，此处不再把 % 加在 width 上
+            // tableWidthValue = `${size}%`
+            tableWidthValue = size;
         }
         this.root.push(new TableWidthAttributes({ type: type, size: measurementOrPercentValue(tableWidthValue) }));
     }

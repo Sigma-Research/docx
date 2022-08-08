@@ -26,7 +26,7 @@ export class Inline extends XmlComponent {
     private readonly extent: Extent;
     private readonly graphic: Graphic;
 
-    constructor(mediaData: IMediaData, transform: IMediaDataTransformation) {
+    constructor(mediaData: IMediaData, transform: IMediaDataTransformation, title?: string) {
         super("wp:inline");
 
         this.root.push(
@@ -39,11 +39,11 @@ export class Inline extends XmlComponent {
         );
 
         this.extent = new Extent(transform.emus.x, transform.emus.y);
-        this.graphic = new Graphic(mediaData, transform);
+        this.graphic = new Graphic(mediaData, transform, title);
 
         this.root.push(this.extent);
         this.root.push(new EffectExtent());
-        this.root.push(new DocProperties());
+        this.root.push(new DocProperties(title));
         this.root.push(new GraphicFrameProperties());
         this.root.push(this.graphic);
     }

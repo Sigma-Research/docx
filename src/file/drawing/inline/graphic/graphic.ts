@@ -14,7 +14,7 @@ class GraphicAttributes extends XmlAttributeComponent<{
 export class Graphic extends XmlComponent {
     private readonly data: GraphicData;
 
-    constructor(mediaData: IMediaData, transform: IMediaDataTransformation) {
+    constructor(mediaData: IMediaData, transform: IMediaDataTransformation, title?: string) {
         super("a:graphic");
         this.root.push(
             new GraphicAttributes({
@@ -22,7 +22,7 @@ export class Graphic extends XmlComponent {
             }),
         );
 
-        this.data = new GraphicData(mediaData, transform);
+        this.data = new GraphicData(mediaData, transform, title);
 
         this.root.push(this.data);
     }

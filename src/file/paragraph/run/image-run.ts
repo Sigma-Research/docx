@@ -11,6 +11,7 @@ export interface IImageOptions {
     readonly data: Buffer | string | Uint8Array | ArrayBuffer;
     readonly transformation: IMediaTransformation;
     readonly floating?: IFloating;
+    readonly title?: string;
 }
 
 export class ImageRun extends Run {
@@ -37,7 +38,7 @@ export class ImageRun extends Run {
                 rotation: options.transformation.rotation ? options.transformation.rotation * 60000 : undefined,
             },
         };
-        const drawing = new Drawing(this.imageData, { floating: options.floating });
+        const drawing = new Drawing(this.imageData, { floating: options.floating }, options.title);
 
         this.root.push(drawing);
     }

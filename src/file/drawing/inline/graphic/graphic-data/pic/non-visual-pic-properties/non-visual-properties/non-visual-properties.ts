@@ -2,7 +2,7 @@ import { XmlComponent } from "@file/xml-components";
 import { NonVisualPropertiesAttributes } from "./non-visual-properties-attributes";
 
 export class NonVisualProperties extends XmlComponent {
-    constructor() {
+    constructor(title?: string) {
         super("pic:cNvPr");
 
         this.root.push(
@@ -10,6 +10,7 @@ export class NonVisualProperties extends XmlComponent {
                 id: 0,
                 name: "",
                 descr: "",
+                title: title ? title : "",
             }),
         );
     }
