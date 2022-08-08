@@ -18,6 +18,9 @@ export interface ILevelParagraphStylePropertiesOptions {
     readonly keepNext?: boolean;
     readonly keepLines?: boolean;
     readonly outlineLevel?: number;
+    readonly bullet?: {
+        readonly level: number;
+    };
 }
 export interface IParagraphStylePropertiesOptions extends ILevelParagraphStylePropertiesOptions {
     readonly numbering?: {
@@ -38,9 +41,6 @@ export interface IParagraphPropertiesOptions extends IParagraphStylePropertiesOp
         readonly leader?: LeaderType;
     }[];
     readonly style?: string;
-    readonly bullet?: {
-        readonly level: number;
-    };
     readonly shading?: IShadingAttributesProperties;
     readonly widowControl?: boolean;
     readonly frame?: IFrameOptions;
