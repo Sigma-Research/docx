@@ -1,0 +1,70 @@
+name: Default
+on:
+    push:
+        branches:
+            - master
+    pull_request:
+        branches:
+            - master
+
+jobs:
+    build:
+        name: Build
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Repo
+              uses: actions/checkout@master
+            - name: Install Dependencies
+              run: npm ci --force
+            - name: Build
+              run: npm run build
+            - name: Archive Production Artifact
+              uses: actions/upload-artifact@master
+              with:
+                  name: build
+                  path: build
+    test:
+        name: Test
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Repo
+              uses: actions/checkout@master
+            - name: Install Dependencies
+              run: npm ci --force
+            - name: Test
+              run: npm run test.coverage
+            - name: Codecov
+              uses: codecov/codecov-action@v1
+              with:
+                  fail_ci_if_error: true
+                  verbose: true
+    lint:
+        name: Lint
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Repo
+              uses: actions/checkout@master
+            - name: Install Dependencies
+              run: npm ci --force
+            - name: Lint
+              run: npm run lint
+    prettier:
+        name: Prettier
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Repo
+              uses: actions/checkout@master
+            - name: Install Dependencies
+              run: npm ci --force
+            - name: Prettier
+              run: npm run style
+    cspell:
+        name: CSpell
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Repo
+              uses: actions/checkout@master
+            - name: Install Dependencies
+              run: npm ci --force
+            - name: Prettier
+              run: npm run cspell

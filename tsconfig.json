@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "target": "es6",
+        "strictNullChecks": true,
+        "sourceMap": true,
+        "removeComments": true,
+        "preserveConstEnums": true,
+        "outDir": "./build",
+        "rootDir": "./src",
+        "module": "es6",
+        "moduleResolution": "node",
+        "declaration": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "baseUrl": "./src",
+        "paths": {
+            "@util/*": ["./util/*"],
+            "@export/*": ["./export/*"],
+            "@file/*": ["./file/*"]
+        }
+    },
+    "include": ["src"]
+}
